@@ -1,0 +1,93 @@
+﻿@model IEnumerable<EmployeeASPNET.Models.Employee>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Employee List</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Employee" class="btn btn-primary ">Create New</a>
+</p>
+
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfJoining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.image)
+            </th>
+            <th colspan="2">Action</th> <!-- Adjusted the action column width -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfJoining)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    <img src="Images/@item.image" alt="Alternate Text" height="70" width="55" style="border-radius:5px" />
+                </td>
+                <!-- Action Buttons Column -->
+                <td colspan="2">
+                    <a asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-success">Edit</a>
+                    <!-- Delete Button with Confirmation -->
+                    <a href="#" onclick="return confirmDelete(@item.EmployeeId);" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <!-- Merged 7 columns for Subject Details -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject Id</th>
+                                <th>Subject Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var subj in item.ProjectAssignments)
+                            {
+                                <tr>
+                                    <td>@subj.Project.ProjectId</td>
+                                    <td>@subj.Project.ProjectName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function confirmDelete(EmployeeId) {
+        if (confirm("Are you sure you want to delete this employee?")) {
+            window.location.href = '@Url.Action("Delete", "Employee")/' + EmployeeId;
+        }
+        return false;
+    }
+</script>
+

@@ -1,0 +1,15 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model EmployeeASPNET.Models.Project
+<div class="rc d-flex">
+    <div>
+        <select asp-items="ViewBag.Project" asp-for="ProjectId" name="ProjectId" class="form-control">
+            <option value="">---Select Project---</option>
+        </select>
+    </div>
+    <div>
+        <a href="#" class="btn btn-danger remove">Remove</a>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿@model EmployeeASPNET.Models.Vm.EmployeeVm
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center text-primary mt-4 fw-bold">Employee Registration</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded">
+                <div class="card-header bg-gradient text-white text-center rounded-top" 
+                    style="background: linear-gradient(to right, #007bff, #0056b3);">
+                    <h4>Enter Employee Details</h4>
+                </div>
+                <div class="card-body bg-light">
+                    <form method="post" enctype="multipart/form-data" id="employeeForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Employee Name -->
+                        <div class="form-group mb-4">
+                            <label asp-for="EmployeeName" class="form-label fw-bold">Employee Name</label>
+                            <input asp-for="EmployeeName" class="form-control rounded-pill shadow-sm" placeholder="Enter full name" />
+                            <span asp-validation-for="EmployeeName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Age" class="form-label fw-bold">Age</label>
+                            <input asp-for="Age" class="form-control rounded-pill shadow-sm" placeholder="Enter age" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                        </div>
+
+                        <!-- Date of Joining -->
+                        <div class="form-group mb-4">
+                            <label asp-for="DateOfJoining" class="form-label fw-bold">Date of Joining</label>
+                            <input asp-for="DateOfJoining" class="form-control rounded-pill shadow-sm" type="date" />
+                            <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+                        </div>
+
+                        <!-- IsActive -->
+                        <div class="form-check form-switch mb-4">
+                            <input asp-for="IsActive" class="form-check-input" type="checkbox" id="IsActiveCheckbox" />
+                            <label asp-for="IsActive" class="form-check-label fw-bold ms-2" for="IsActiveCheckbox">Is Active</label>
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div class="form-group mb-4">
+                            <label asp-for="imageFile" class="form-label fw-bold">Profile Picture</label>
+                            <input asp-for="imageFile" class="form-control rounded-pill shadow-sm" type="file" />
+                            <span asp-validation-for="imageFile" class="text-danger"></span>
+                        </div>
+
+                        <!-- Subject Selection -->
+                        <div class="form-group mb-4">
+                         
+                            <div class="con">
+                                <div class="rc d-flex align-items-center mb-2">
+                                   @Html.Partial("_addSubject")
+                                    <a href="#" class="btn btn-outline-primary ms-3 rounded-pill addmore">Add More</a> 
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid mt-4">
+                            <input type="submit" value="Create Employee" class="btn btn-success btn-lg rounded-pill shadow" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("employeeForm").addEventListener("submit", function (e) {
+            alert("Form submitted successfully!");
+        });
+    </script>
+}

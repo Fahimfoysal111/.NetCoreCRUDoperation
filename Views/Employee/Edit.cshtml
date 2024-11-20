@@ -1,0 +1,81 @@
+﻿@model EmployeeASPNET.Models.Vm.EmployeeVm
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center text-primary mt-4 fw-bold">Edit Employee</h1>
+
+<h4 class="text-secondary">Employee Information</h4>
+<hr class="mb-4" />
+<div class="row justify-content-center">
+    <div class="col-md-6 shadow p-4 bg-light rounded">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="EmployeeId" class="form-label"></label>
+                <input asp-for="EmployeeId" class="form-control" readonly />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EmployeeName" class="form-label"></label>
+                <input asp-for="EmployeeName" class="form-control" />
+                <span asp-validation-for="EmployeeName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Age" class="form-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DateOfJoining" class="form-label"></label>
+                <input asp-for="DateOfJoining" class="form-control" type="date" />
+                <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+            </div>
+
+            <div class="form-check form-switch mb-4">
+                <input asp-for="IsActive" class="form-check-input" type="checkbox" id="IsActive" />
+                <label asp-for="IsActive" class="form-check-label fw-bold ms-2"></label>
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="imageFile" class="form-label"></label>
+                <div class="d-flex align-items-center">
+                    <input asp-for="imageFile" class="form-control me-3" type="file" />
+                    <img src="/Images/@Model.image" alt="Employee Image" class="img-thumbnail" width="60" height="60" />
+                </div>
+                <span asp-validation-for="imageFile" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <a href="#" class="btn btn-secondary addmore mb-3">Add More</a>
+                <div class="con">
+                    @foreach (var s in Model.ProjectAssignments)
+                    {
+                        <div class="rc d-flex mb-2">
+                            <select asp-items="ViewBag.Project" id="ProjectId" name="ProjectId" class="form-select me-3">
+                                <option value="ProjectId">@s.Project.ProjectName</option>
+                            </select>
+                            <a href="#" class="btn btn-danger remove">Remove</a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <input type="submit" value="Save Changes" class="btn btn-primary btn-lg" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4 text-center">
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>
+
+@* @section Scripts {
+    @await Html.RenderPartialAsync("_ValidationScriptsPartial")
+} *@
