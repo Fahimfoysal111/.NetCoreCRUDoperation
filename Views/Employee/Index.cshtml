@@ -1,86 +1,100 @@
-﻿@model IEnumerable<EmployeeASPNET.Models.Employee>
+@model IEnumerable<EmployeeASPNET.Models.Employee>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Employee List";
 }
 
-<h1>Employee List</h1>
+<h1 class="text-center my-4 text-primary">Employee List</h1>
 
-<p>
-    <a asp-action="Create" asp-controller="Employee" class="btn btn-primary ">Create New</a>
-</p>
+<div class="d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-primary" onclick="openAddEmployeeModal()">
+        <i class="bi bi-person-plus-fill"></i> Add New Employee
+    </button>
+</div>
 
-<table class="table text-center">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Age)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfJoining)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.image)
-            </th>
-            <th colspan="2">Action</th> <!-- Adjusted the action column width -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-hover text-center align-middle">
+        <thead class="table-dark">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmployeeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Age)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateOfJoining)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
-                <td>
-                    <img src="Images/@item.image" alt="Alternate Text" height="70" width="55" style="border-radius:5px" />
-                </td>
-                <!-- Action Buttons Column -->
-                <td colspan="2">
-                    <a asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-success">Edit</a>
-                    <!-- Delete Button with Confirmation -->
-                    <a href="#" onclick="return confirmDelete(@item.EmployeeId);" class="btn btn-danger">Delete</a>
-                </td>
+                <th>@Html.DisplayNameFor(model => model.EmployeeName)</th>
+                <th>@Html.DisplayNameFor(model => model.Age)</th>
+                <th>@Html.DisplayNameFor(model => model.DateOfJoining)</th>
+                <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                <th>Photo</th>
+                <th>Actions</th>
             </tr>
-            <tr>
-                <td colspan="7">
-                    <!-- Merged 7 columns for Subject Details -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Subject Id</th>
-                                <th>Subject Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var subj in item.ProjectAssignments)
-                            {
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.EmployeeName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DateOfJoining)</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <img src="Images/@item.image" alt="Employee Photo" height="70" width="55" class="rounded shadow-sm">
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-success btn-sm">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <button onclick="return confirmDelete(@item.EmployeeId);" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Nested Row for Project Details -->
+                <tr class="bg-light">
+                    <td colspan="6">
+                        <table class="table table-sm">
+                            <thead>
                                 <tr>
-                                    <td>@subj.Project.ProjectId</td>
-                                    <td>@subj.Project.ProjectName</td>
+                                    <th>Project ID</th>
+                                    <th>Project Name</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            </thead>
+                            <tbody>
+                                @foreach (var proj in item.ProjectAssignments)
+                                {
+                                    <tr>
+                                        <td>@proj.Project.ProjectId</td>
+                                        <td>@proj.Project.ProjectName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-person-plus"></i> Add New Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+                <!-- Form content will load dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     function confirmDelete(EmployeeId) {
@@ -88,6 +102,20 @@
             window.location.href = '@Url.Action("Delete", "Employee")/' + EmployeeId;
         }
         return false;
+    }
+
+    function openAddEmployeeModal() {
+        $.ajax({
+            url: '@Url.Action("Create", "Employee")',
+            type: 'GET',
+            success: function (result) {
+                $('#modalBodyContent').html(result);
+                $('#exampleModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading modal content: " + error);
+            }
+        });
     }
 </script>
 
